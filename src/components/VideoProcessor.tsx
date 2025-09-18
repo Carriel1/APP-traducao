@@ -10,6 +10,12 @@ import { pipeline, env } from '@huggingface/transformers';
 type ProcessingStep = 'upload' | 'processing' | 'completed';
 type ProcessingType = 'subtitle' | 'translate' | 'voice';
 
+interface Subtitle {
+  start: number
+  end: number
+  text: string
+}
+
 interface VideoProcessorProps {
   className?: string;
 }
@@ -166,7 +172,7 @@ export function VideoProcessor({ className }: VideoProcessorProps) {
       setProgress(30);
       
       // Simular transcrição (em produção real, extrairia áudio do vídeo)
-      const mockTranscription = [
+      const mockTranscription: Subtitle[] = [
         { start: 0, end: 3, text: "Olá, bem-vindos ao nosso vídeo" },
         { start: 3, end: 6, text: "Hoje vamos falar sobre tecnologia" },
         { start: 6, end: 9, text: "E como ela pode transformar vidas" },
@@ -199,7 +205,7 @@ export function VideoProcessor({ className }: VideoProcessorProps) {
       setProgress(30);
       
       // Simular transcrição original em inglês
-      const originalTranscription = [
+      const originalTranscription: Subtitle[] = [
         { start: 0, end: 3, text: "Hello, welcome to our video" },
         { start: 3, end: 6, text: "Today we will talk about technology" },
         { start: 6, end: 9, text: "And how it can transform lives" },
@@ -209,7 +215,7 @@ export function VideoProcessor({ className }: VideoProcessorProps) {
       setProgress(50);
       
       // Traduzir para português (simulado)
-      const translatedTranscription = [
+      const translatedTranscription: Subtitle[] = [
         { start: 0, end: 3, text: "Olá, bem-vindos ao nosso vídeo" },
         { start: 3, end: 6, text: "Hoje falaremos sobre tecnologia" },
         { start: 6, end: 9, text: "E como ela pode transformar vidas" },
@@ -265,7 +271,7 @@ export function VideoProcessor({ className }: VideoProcessorProps) {
     }
   };
 
-  const createVideoWithSubtitles = async (subtitles: any[], isTranslated = false): Promise<string> => {
+  const createVideoWithSubtitles = async (subtitles: Subtitle[], isTranslated = false): Promise<string> => {
     const video = document.createElement('video');
     video.src = videoUrl;
     video.muted = true;
